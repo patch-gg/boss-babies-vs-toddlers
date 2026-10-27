@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#ffd8e8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Babies vs Babies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@500&display=swap" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="view"></canvas>
+
+      <a id="community" href="https://discord.gg/tqVrBwBFn" target="_blank" rel="noopener noreferrer" aria-label="Join our Discord">
+        <img class="patch" src="/brand/patch.svg" alt="Patch" width="21" height="21" />
+        <i class="rule" aria-hidden="true"></i>
+        <svg class="dc" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.317 4.369A19.79 19.79 0 0 0 15.432 3c-.21.375-.456.88-.625 1.28a18.27 18.27 0 0 0-5.614 0A12.6 12.6 0 0 0 8.56 3a19.74 19.74 0 0 0-4.886 1.372C.556 9.046-.32 13.58.118 18.057a19.9 19.9 0 0 0 6.073 3.058c.49-.669.927-1.38 1.304-2.126a12.9 12.9 0 0 1-2.053-.985c.172-.127.34-.26.502-.396a14.2 14.2 0 0 0 12.11 0c.164.14.332.273.502.396-.655.387-1.344.717-2.056.986.377.745.813 1.456 1.304 2.125a19.84 19.84 0 0 0 6.076-3.058c.515-5.19-.879-9.683-3.69-13.69ZM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.42 0-1.332.955-2.42 2.157-2.42 1.21 0 2.176 1.095 2.157 2.42 0 1.335-.955 2.42-2.157 2.42Zm7.975 0c-1.183 0-2.157-1.085-2.157-2.42 0-1.332.955-2.42 2.157-2.42 1.21 0 2.176 1.095 2.157 2.42 0 1.335-.946 2.42-2.157 2.42Z"/></svg>
+        <span>join us on discord</span>
+      </a>
+
+      <div id="hud" hidden>
+        <div id="dmg"></div>
+        <div id="scope" hidden>
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+            <defs><mask id="hole"><rect width="100" height="100" fill="#fff" /><circle cx="50" cy="50" r="38" fill="#000" /></mask></defs>
+            <rect width="100" height="100" fill="#06060c" mask="url(#hole)" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#000" stroke-width="0.6" />
+            <line x1="12" y1="50" x2="88" y2="50" stroke="#000" stroke-width="0.18" />
+            <line x1="50" y1="12" x2="50" y2="88" stroke="#000" stroke-width="0.18" />
+            <circle cx="50" cy="50" r="0.35" fill="#ff9f4a" />
+            <line x1="46" y1="50" x2="48" y2="50" stroke="#000" stroke-width="0.5" /><line x1="52" y1="50" x2="54" y2="50" stroke="#000" stroke-width="0.5" />
+            <line x1="50" y1="53" x2="50" y2="54.5" stroke="#000" stroke-width="0.4" /><line x1="50" y1="57" x2="50" y2="58.5" stroke="#000" stroke-width="0.4" />
+          </svg>
+        </div>
+        <div id="crosshair"><i class="t"></i><i class="b"></i><i class="l"></i><i class="r"></i><i class="dot"></i><div id="hitmark"><i></i><i></i><i></i><i></i></div></div>
+        <div id="popups"></div>
+
+        <canvas id="minimap" width="300" height="300"></canvas>
+
+        <div id="scorebar">
+          <div class="side blue"><span class="lbl" id="l-blue">BOSS BABIES</span><b id="s-blue">0</b></div>
+          <div id="timer">1:30</div>
+          <div class="side pink"><b id="s-pink">0</b><span class="lbl" id="l-pink">TODDLERS</span></div>
+        </div>
+        <div id="limit">FIRST TO <span id="limit-n">15</span></div>
+
+        <ul id="feed"></ul>
+        <div id="toast"><b></b><span></span></div>
+
+        <div id="health">
+          <svg viewBox="0 0 24 24" class="heart"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11z" fill="#ff4f7b" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <div class="hbar"><div id="hfill"></div><b id="hp">150</b></div>
+        </div>
+        <div id="weapon">
+          <div id="streaks"><div class="streak" id="st4"><kbd>4</kbd><span>DIAPER DRONE</span></div><div class="streak" id="st5"><kbd>5</kbd><span>BOTTLE STRIKE</span></div></div>
+          <div id="wslots"><span><kbd>1</kbd></span><span><kbd>2</kbd></span><span><kbd>3</kbd></span></div>
+          <div id="wname">SPLAT BLASTER</div>
+          <div id="ammo"><b id="ammo-n">30</b><span id="ammo-m">/ 30</span></div>
+        </div>
+        <div id="reload-hint">PRESS <kbd>R</kbd> TO RELOAD</div>
+        <div id="fps" hidden></div>
+      </div>
+
+      <div id="touch" hidden>
+        <div id="stick-base"><div id="stick-knob"></div></div>
+        <div class="tbtn" id="tb-fire">FIRE</div>
+        <div class="tbtn" id="tb-aim">AIM</div>
+        <div class="tbtn" id="tb-jump">HOP</div>
+        <div class="tbtn" id="tb-reload">R</div>
+        <div class="tbtn" id="tb-swap">SWAP</div>
+        <div class="tbtn" id="tb-melee">BONK</div>
+        <div class="tbtn" id="tb-s4">4</div>
+        <div class="tbtn" id="tb-s5">5</div>
+      </div>
+
+      <div id="teamsel" class="overlay">
+        <div class="menu-card wide">
+          <div class="logo"><span class="l1">BABIES</span><span class="vs">VS</span><span class="l2">BABIES</span></div>
+          <p class="tag">Pick your side</p>
+          <div class="teams">
+            <button class="team" id="team-boss" data-team="boss">
+              <img class="portrait" src="/cards/card_boss.jpg" alt="Boss Baby" width="320" height="400" />
+              <b>BOSS BABIES</b><small>Tiny suits. Big opinions. Meetings at nap time.</small>
+              <em>vs TODDLERS</em>
+            </button>
+            <button class="team" id="team-toddlers" data-team="toddlers">
+              <img class="portrait" src="/cards/card_toddlers.jpg" alt="Toddler" width="320" height="400" />
+              <b>TODDLERS</b><small>Diapers on, rules off. Snacks are ammo.</small>
+              <em>vs BOSS BABIES</em>
+            </button>
+          </div>
+          <p class="hint">Tap a card to choose. Keyboard: <kbd>1</kbd> <kbd>2</kbd> or arrows + <kbd>Enter</kbd>. Gamepad: stick + A.</p>
+        </div>
+      </div>
+
+      <div id="menu" class="overlay" hidden>
+        <div class="menu-card">
+          <div class="logo"><span class="l1">BABIES</span><span class="vs">VS</span><span class="l2">BABIES</span></div>
+          <p class="tag" id="menu-tag">Boss Babies vs Toddlers. Splat 'em.</p>
+          <div class="maps">
+            <button class="map" id="map-nursery" data-map="nursery"><i class="thumb nursery"></i><b>NURSERY</b><small>Giant playroom, alphabet blocks, crib</small></button>
+            <button class="map sel" id="map-backyard" data-map="backyard"><i class="thumb backyard"></i><b>BACKYARD</b><small>Two-level deck, ramps, sandbox, kiddie pool</small></button>
+          </div>
+          <button id="play">PLAY</button>
+          <button id="change-team" class="linkbtn">change team</button>
+          <div class="keys"><span><kbd>WASD</kbd> move</span><span><kbd>Mouse</kbd> aim / <kbd>LMB</kbd> fire</span><span><kbd>RMB</kbd> scope / aim</span><span><kbd>MMB</kbd> or <kbd>V</kbd> rattle bonk</span><span><kbd>1 2 3</kbd> weapons</span><span><kbd>R</kbd> reload</span><span><kbd>Space</kbd> hop</span><span><kbd>Shift</kbd> crawl-run</span><span><kbd>4 5</kbd> killstreaks</span><span>Gamepad &amp; touch supported</span></div>
+        </div>
+      </div>
+      <div id="pause" class="overlay" hidden><div class="menu-card small"><div class="big">PAUSED</div><p>Click to get back in</p></div></div>
+      <div id="result" class="overlay" hidden>
+        <div class="menu-card small">
+          <div class="big" id="r-title">ROUND WON</div>
+          <p id="r-sub"></p>
+          <div class="stats" id="r-stats"></div>
+          <div class="btns"><button id="r-again">PLAY AGAIN</button><button id="r-menu" class="alt">MENU</button></div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

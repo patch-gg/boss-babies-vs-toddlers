@@ -1,0 +1,14 @@
+# Media and 3D (video, audio, .blend, .glb, .exr, big images) are saved with the project:
+# Patch-gg/timmy-projects keeps them in Git LFS. Only caches, builds and secrets are ignored here.
+node_modules/
+dist/
+.vercel/
+.env
+.env.*
+*.log
+.DS_Store
+
+# capture frames are huge and reproducible; keep only the encoded videos / contact sheets / logs
+renders/*/frames/
+.vercel
+.env*
